@@ -451,6 +451,8 @@ Bug Fixes
   - Fixed string methods for ``FrozenNDArray`` and ``FrozenList`` (:issue:`4929`)
   - Fixed a bug with setting invalid or out-of-range values in indexing
     enlargement scenarios (:issue:`4940`)
+  - Fixed bug preventing ``cut`` from working with ``np.inf`` levels without
+    explicitly passing labels (:issue:`3415`)
 
 pandas 0.12.0
 -------------
