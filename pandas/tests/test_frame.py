@@ -6384,6 +6384,10 @@ class TestDataFrame(tm.TestCase, CheckIndexing,
         copy = self.mixed_frame.copy()
         self.assert_(copy._data is not self.mixed_frame._data)
 
+    def test_copy_empty(self):
+        empty_df = DataFrame(index=self.frame.index).copy()
+        empty_df["A"] = 0
+
     def _check_method(self, method='pearson', check_minp=False):
         if not check_minp:
             correls = self.frame.corr(method=method)
