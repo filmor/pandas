@@ -4571,6 +4571,35 @@ class TestHDFStore(tm.TestCase):
             other = read_hdf(path, 'df')
             tm.assert_frame_equal(df, other)
 
+    def test_non_unique_items_axis(self):
+        panel = Panel(
+                    data=np.zeros((2, 2, 2)),
+                    items=["a", "a"],
+                    major_axis=["b", "b"],
+                    minor_axis=["c", "c"]
+                )
+
+        with ensure_clean_path(self.path) as path:
+            self.assertRaises(
+                    ValueError, panel.to_hdf, path, 'panel', format='fixed'
+                    )
+
+            panel.to_hdf(path, 'panel', format='table')
+            other = read_hdf(path, 'panel')
+            tm.assert_panel_equal(panel, other)
+
+    def test_non_unique_series_index(self):
+        series = Series([0, 0], index=["a", "a"])
+
+        with ensure_clean_path(self.path) as path:
+            series.to_hdf(path, 'series', format="fixed")
+            other = read_hdf(path, 'series')
+            tm.assert_series_equal(series, other)
+
+            series.to_hdf(path, 'series', format='table')
+            other = read_hdf(path, 'series')
+            tm.assert_series_equal(series, other)
+
 
 def _test_sort(obj):
     if isinstance(obj, DataFrame):
